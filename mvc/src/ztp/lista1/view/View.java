@@ -2,21 +2,29 @@ package ztp.lista1.view;
 
 import ztp.lista1.controller.ViewListener;
 import ztp.lista1.model.Model;
-import ztp.lista1.model.entity.Course;
+import ztp.lista1.model.entity.Student;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.regex.Pattern;
 
 public class View {
-    private final static String MAIN_MENU = "MENU GŁÓWNE\nLista dostępnych opcji:\n" +
+    private final static String MAIN_MENU = "\nMENU GŁÓWNE\nLista dostępnych opcji:\n" +
             "[1] Wyświetl listę kursów\n[2] Wyświetl listę studentów\nWybierz: ";
     private final static String COURSE_MENU[] = {
-            "MENU KURSÓW\nKursy:\n",
+            "\nMENU KURSÓW\nKursy:\n",
             "Lista dostępnych opcji:\n[1] Dodaj nowy kurs\n[2] Zmień dane kursu\n[3] Usuń kurs\n" +
                     "[4] Zapisz studenta na kurs\n[5] Wypisz studenta z kursu\nWybierz: "
     };
+    private final static String STUDENT_MENU[] = {
+            "\nMENU STUDENTÓW\nStudenci:\n",
+            "Lista dostępnych opcji:\n[1] Dodaj nowego studenta\n[2] Zmień dane studenta\n" +
+                    "[3] Usuń studenta\nWybierz: "};
+
+    private final static String CHOOSE_STUDENT[] = {"\nLISTA STUDENTÓW:", "Wybierz studenta: "};
+    private final static String STUDENT_DELETED[] = {"Student ", " został usunięty."};
 
     private final static String COURSE_CHOICE = "Podaj nr kursu: ";
 
@@ -44,20 +52,44 @@ public class View {
         notifyActionListeners(ViewActionType.COURSE_MENU_CHOICE, null, readInput());
     }
 
-    public void showCourseChoice(ViewActionType actionType) {
-        System.out.print(COURSE_CHOICE);
-        notifyActionListeners(actionType, chooseCourseFromTheList(), readInput());
+    public void showStudentMenu() {
+        System.out.println(STUDENT_MENU[0]);
+        showStudentList();
+        System.out.println(STUDENT_MENU[1]);
+        notifyActionListeners(ViewActionType.STUDENT_MENU_CHOICE, null, readInput());
     }
 
-    public void showStudentMenu() {
-        System.out.println("MENU STUDENTÓW");
+    public void showCreateStudentDialog() {
+
+    }
+
+    public void showEditChooseStudentDialog() {
+        System.out.println(CHOOSE_STUDENT[0]);
+        showStudentList();
+        System.out.println(CHOOSE_STUDENT[1]);
+        notifyActionListeners(ViewActionType.STUDENT_EDIT, null, readInput());
+    }
+
+    public void showDeleteChooseStudentDialog() {
+        System.out.println(CHOOSE_STUDENT[0]);
+        showStudentList();
+        System.out.println(CHOOSE_STUDENT[1]);
+        notifyActionListeners(ViewActionType.STUDENT_DELETE, null, readInput());
+    }
+
+    public void showStudentDeleted(Student student) {
+        System.out.print(STUDENT_DELETED[0]);
+        System.out.print(student.toString());
+        System.out.println(STUDENT_DELETED[1]);
+    }
+
+    public void showStudentList() {
         System.out.println("Studenci:");
-        System.out.println();
-        System.out.println("Lista dostępnych opcji:");
-        System.out.println("[1] Dodaj nowego studenta");
-        System.out.println("[2] Zmień dane studenta");
-        System.out.println("[3] Usuń studenta");
-        System.out.println("Wybierz: ");
+        List<Student> students = model.readAllStudents();
+        for (int i = 0; i < students.size(); i++) {
+            System.out.print(i + " ");
+            System.out.println(students.get(i));
+        }
     }
 
     public void showIncorrectInputMessage() {
@@ -69,18 +101,6 @@ public class View {
             return scanner.nextLine();
         }
         return "";
-    }
-
-    private Object chooseCourseFromTheList() {
-        String input = readInput();
-        if (numberPattern.matcher(input).matches()) {
-            int number = Integer.parseInt(input);
-            Course course = model.readCourse(number);
-            if (course != null) {
-                return course;
-            }
-        }
-        return -1;
     }
 
     public void addActionListener(ViewListener newViewListener) {

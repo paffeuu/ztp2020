@@ -44,4 +44,13 @@ public class Student {
     public void setGender(char gender) {
         this.gender = gender;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(firstName);
+        sb.append(" ");
+        sb.append(lastName);
+        return sb.toString();
+    }
 }

@@ -13,6 +13,15 @@ public class Model {
     public Model() {
         this.courses = new ArrayList<>();
         this.students = new ArrayList<>();
+
+        //MOCK
+        students.add(new Student("Pawel", "Kowanski", 234234, 'M'));
+        students.add(new Student("Mariusz", "Wisniewski", 345345, 'M'));
+        students.add(new Student("Janina", "Truskawska", 555555, 'K'));
+        students.add(new Student("Tomasz", "Kowal", 333333, 'M'));
+        students.add(new Student("Marianna", "Wisniak", 567888, 'K'));
+
+
     }
 
     //COURSE
@@ -25,6 +34,9 @@ public class Model {
 
     //Read
     public Course readCourse(int index) {
+        if (index >= courses.size()) {
+            return null;
+        }
         return courses.get(index);
     }
 
@@ -64,6 +76,10 @@ public class Model {
         courses.remove(index);
     }
 
+    public void removeCourse(Course course) {
+        courses.remove(course);
+    }
+
     //STUDENT
 
     //Create
@@ -74,7 +90,14 @@ public class Model {
 
     //Read
     public Student readStudent(int index) {
+        if (index >= students.size()) {
+            return null;
+        }
         return students.get(index);
+    }
+
+    public List<Student> readAllStudents() {
+        return students;
     }
 
     //Update
@@ -95,6 +118,10 @@ public class Model {
     //Delete
     public void removeStudent(int index) {
         students.remove(index);
+    }
+
+    public void removeStudent(Student student) {
+        students.remove(student);
     }
 
 
