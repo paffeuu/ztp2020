@@ -21,6 +21,10 @@ public class Model {
         students.add(new Student("Tomasz", "Kowal", 333333, 'M'));
         students.add(new Student("Marianna", "Wisniak", 567888, 'K'));
 
+        courses.add(new Course("Matematyka", 2, "Woźniak"));
+        courses.add(new Course("Mechanika kwantowa", 4, "Wojnarowicz"));
+        courses.add(new Course("Programowanie obiektowe", 5, "Misztela"));
+
 
     }
 
@@ -32,12 +36,24 @@ public class Model {
         courses.add(newCourse);
     }
 
+    public void createCourse(Course course) {
+        courses.add(course);
+    }
+
     //Read
     public Course readCourse(int index) {
         if (index >= courses.size()) {
             return null;
         }
         return courses.get(index);
+    }
+
+    public List<Course> readAllCourses() {
+        return courses;
+    }
+
+    public Course findCourseByName(String name) {
+        return courses.stream().filter(course -> course.getName().equals(name)).findFirst().get();
     }
 
     //Update

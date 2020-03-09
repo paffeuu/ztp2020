@@ -29,6 +29,19 @@ public class Controller {
             case COURSE_MENU_CHOICE:
                 handleCourseMenuChoice(data);
                 break;
+            case COURSE_CREATE:
+                handleCourseCreated((Course) object);
+                break;
+            case COURSE_EDIT:
+                if (object == null) {
+                    handleCourseEdit(data);
+                } else {
+                    handleCourseEdited((Course) object);
+                }
+                break;
+            case COURSE_DELETE:
+                handleCourseDeleted(data);
+                break;
             case STUDENT_MENU_CHOICE:
                 handleStudentMenuChoice(data);
                 break;
@@ -64,8 +77,14 @@ public class Controller {
     private void handleCourseMenuChoice(String menuChoice) {
         switch (menuChoice) {
             case "1":
+                view.showCourseCreateForm();
+                break;
             case "2":
+                view.showEditChooseCourse();
+                break;
             case "3":
+                view.showDeleteChooseCourse();
+                break;
             case "4":
             case "5":
             default:
@@ -87,6 +106,44 @@ public class Controller {
                 break;
             default:
                 view.showStudentMenu();
+        }
+    }
+
+    private void handleCourseCreated(Course course) {
+        model.createCourse(course);
+        view.showCourseCreated(course);
+        view.showMainMenu();
+    }
+
+    private void handleCourseEdit(String courseNr) {
+        Course course = chooseCourseFromTheList(courseNr);
+        if (course == null) {
+            view.showIncorrectInputMessage();
+            view.showEditChooseCourse();
+        } else {
+            view.showCourseEditForm(course);
+        }
+    }
+
+    private void handleCourseEdited(Course course) {
+        Course originalCourse = model.findCourseByName(course.getName());
+        int oldSemester = originalCourse.getSemester();
+        String oldTeacherName = originalCourse.getTeacherName();
+        originalCourse.setSemester(course.getSemester());
+        originalCourse.setTeacherName(course.getTeacherName());
+        view.showCourseEdited(oldSemester, oldTeacherName, originalCourse);
+        view.showMainMenu();
+    }
+
+    private void handleCourseDeleted(String courseNr) {
+        Course course = chooseCourseFromTheList(courseNr);
+        if (course == null) {
+            view.showIncorrectInputMessage();
+            view.showDeleteChooseCourse();
+        } else {
+            model.removeCourse(course);
+            view.showCourseDeleted(course);
+            view.showMainMenu();
         }
     }
 

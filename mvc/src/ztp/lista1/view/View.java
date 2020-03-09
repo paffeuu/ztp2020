@@ -2,6 +2,7 @@ package ztp.lista1.view;
 
 import ztp.lista1.controller.ViewListener;
 import ztp.lista1.model.Model;
+import ztp.lista1.model.entity.Course;
 import ztp.lista1.model.entity.Student;
 
 import java.util.HashSet;
@@ -10,28 +11,31 @@ import java.util.Scanner;
 import java.util.Set;
 
 public class View {
-    private final static String MAIN_MENU = "\nMENU GŁÓWNE\nLista dostępnych opcji:\n" +
+    private static final String MAIN_MENU = "\nMENU GŁÓWNE\nLista dostępnych opcji:\n" +
             "[1] Wyświetl listę kursów\n[2] Wyświetl listę studentów\nWybierz: ";
-    private final static String COURSE_MENU[] = {
-            "\nMENU KURSÓW\nKursy:\n",
+    private static final String COURSE_MENU[] = {
+            "\nMENU KURSÓW\n",
             "Lista dostępnych opcji:\n[1] Dodaj nowy kurs\n[2] Zmień dane kursu\n[3] Usuń kurs\n" +
                     "[4] Zapisz studenta na kurs\n[5] Wypisz studenta z kursu\nWybierz: "
     };
-    private final static String STUDENT_MENU[] = {
-            "\nMENU STUDENTÓW\nStudenci:\n",
+    private static final String COURSE_CREATE[] = {"Podaj nazwę: ", "Podaj nr semestru: ", "Podaj nazwisko prowadzącego: "};
+    private static final String COURSE_CREATED[] = {"Kurs ", " został utworzony."};
+    private static final String CHOOSE_COURSE[] = {"\nLISTA KURSÓW:", "Wybierz kurs: "};
+    private static final String COURSE_EDIT[] = {"Wpisz nowy nr semestru: ", "Wpisz nowe nazwisko prowadzącego: "};
+    private static final String COURSE_EDITED[] = {"Kurs ", " zmienil dane na ", "."};
+    private static final String COURSE_DELETED[] = {"Kurs ", " został usunięty."};
+    private static final String STUDENT_MENU[] = {
+            "\nMENU STUDENTÓW\n",
             "Lista dostępnych opcji:\n[1] Dodaj nowego studenta\n[2] Zmień dane studenta\n" +
                     "[3] Usuń studenta\nWybierz: "};
 
-    private final static String STUDENT_CREATE[] = {"Podaj imię: ", "Podaj nazwisko: ",
+    private static final String STUDENT_CREATE[] = {"Podaj imię: ", "Podaj nazwisko: ",
             "Podaj nr indeksu: ", "Wybierz płeć (K lub M): "};
-    private final static String STUDENT_CREATED[] = {"Student ", " został utworzony."};
-    private final static String CHOOSE_STUDENT[] = {"\nLISTA STUDENTÓW:", "Wybierz studenta: "};
-    private final static String STUDENT_EDIT[] = {"Wpisz nowe imię studenta: ", "Wpisz nowe nazwisko studenta: "};
-    private final static String STUDENT_EDITED[] = {"Student ", " zmienil dane na ", "."};
-    private final static String STUDENT_DELETED[] = {"Student ", " został usunięty."};
-
-
-    private final static String COURSE_CHOICE = "Podaj nr kursu: ";
+    private static final String STUDENT_CREATED[] = {"Student ", " został utworzony."};
+    private static final String CHOOSE_STUDENT[] = {"\nLISTA STUDENTÓW:", "Wybierz studenta: "};
+    private static final String STUDENT_EDIT[] = {"Wpisz nowe imię studenta: ", "Wpisz nowe nazwisko studenta: "};
+    private static final String STUDENT_EDITED[] = {"Student ", " zmienil dane na ", "."};
+    private static final String STUDENT_DELETED[] = {"Student ", " został usunięty."};
 
     private final Model model;
     private Set<ViewListener> listeners;
@@ -50,9 +54,74 @@ public class View {
 
     public void showCourseMenu() {
         System.out.println(COURSE_MENU[0]);
-        System.out.println();
+        showCourseList();
         System.out.print(COURSE_MENU[1]);
         notifyActionListeners(ViewActionType.COURSE_MENU_CHOICE, null, readInput());
+    }
+
+    public void showCourseCreateForm() {
+        System.out.print(COURSE_CREATE[0]);
+        String name = readInput();
+        System.out.print(COURSE_CREATE[1]);
+        String semester = readInput();
+        System.out.print(COURSE_CREATE[2]);
+        String teacherName = readInput();
+        int semesterInt = Integer.parseInt(semester);
+        Course newCourse = new Course(name, semesterInt, teacherName);
+        notifyActionListeners(ViewActionType.COURSE_CREATE, newCourse, null);
+    }
+
+    public void showCourseCreated(Course course) {
+        System.out.print(COURSE_CREATED[0]);
+        System.out.print(course);
+        System.out.print(COURSE_CREATED[1]);
+    }
+
+    public void showEditChooseCourse() {
+        System.out.println(CHOOSE_COURSE[0]);
+        showCourseList();
+        System.out.println(CHOOSE_COURSE[1]);
+        notifyActionListeners(ViewActionType.COURSE_EDIT, null, readInput());
+    }
+
+    public void showCourseEditForm(Course course) {
+        System.out.println(COURSE_EDIT[0]);
+        String semester = readInput();
+        System.out.println(COURSE_EDIT[1]);
+        String teacherName = readInput();
+        int semesterInt = Integer.parseInt(semester);
+        Course newCourse = new Course(course.getName(), semesterInt, teacherName);
+        notifyActionListeners(ViewActionType.COURSE_EDIT, newCourse, null);
+    }
+
+    public void showDeleteChooseCourse() {
+        System.out.println(CHOOSE_COURSE[0]);
+        showCourseList();
+        System.out.println(CHOOSE_COURSE[1]);
+        notifyActionListeners(ViewActionType.COURSE_DELETE, null, readInput());
+    }
+
+    public void showCourseEdited(int oldSemester, String oldTeacherName, Course course) {
+        System.out.print(COURSE_EDITED[0]);
+        System.out.print("(" + oldTeacherName + " " + oldSemester + ")");
+        System.out.print(COURSE_EDITED[1]);
+        System.out.print(course);
+        System.out.println(COURSE_EDITED[2]);
+    }
+
+    public void showCourseDeleted(Course course) {
+        System.out.print(COURSE_DELETED[0]);
+        System.out.print(course.toString());
+        System.out.println(COURSE_DELETED[1]);
+    }
+
+    private void showCourseList() {
+        System.out.println("Kursy:");
+        List<Course> courses = model.readAllCourses();
+        for (int i = 0; i < courses.size(); i++) {
+            System.out.print(i + " ");
+            System.out.println(courses.get(i));
+        }
     }
 
     public void showStudentMenu() {
@@ -120,7 +189,7 @@ public class View {
         System.out.println(STUDENT_DELETED[1]);
     }
 
-    public void showStudentList() {
+    private void showStudentList() {
         System.out.println("Studenci:");
         List<Student> students = model.readAllStudents();
         for (int i = 0; i < students.size(); i++) {

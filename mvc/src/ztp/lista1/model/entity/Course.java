@@ -62,4 +62,16 @@ public class Course {
     public void setSignedUpStudents(List<Student> signedUpStudents) {
         this.signedUpStudents = signedUpStudents;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(name);
+        sb.append(" (");
+        sb.append(teacherName);
+        sb.append(" ");
+        sb.append(semester);
+        sb.append(")");
+        return sb.toString();
+    }
 }
