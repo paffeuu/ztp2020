@@ -32,6 +32,9 @@ public class Controller {
             case STUDENT_MENU_CHOICE:
                 handleStudentMenuChoice(data);
                 break;
+            case STUDENT_CREATE:
+                handleStudentCreated((Student) object);
+                break;
             case STUDENT_EDIT:
                 if (object == null) {
                     handleStudentEdit(data);
@@ -74,26 +77,32 @@ public class Controller {
     private void handleStudentMenuChoice(String menuChoice) {
         switch (menuChoice) {
             case "1":
-                view.showCreateStudentDialog();
+                view.showStudentCreateForm();
                 break;
             case "2":
-                view.showEditChooseStudentDialog();
+                view.showEditChooseStudent();
                 break;
             case "3":
-                view.showDeleteChooseStudentDialog();
+                view.showDeleteChooseStudent();
                 break;
             default:
                 view.showStudentMenu();
         }
     }
 
+    private void handleStudentCreated(Student student) {
+        model.createStudent(student);
+        view.showStudentCreated(student);
+        view.showMainMenu();
+    }
+
     private void handleStudentEdit(String studentNr) {
         Student student = chooseStudentFromTheList(studentNr);
         if (student == null) {
             view.showIncorrectInputMessage();
-            view.showEditChooseStudentDialog();
+            view.showEditChooseStudent();
         } else {
-            view.showStudentEdit(student);
+            view.showStudentEditForm(student);
         }
     }
 
@@ -104,13 +113,14 @@ public class Controller {
         originalStudent.setFirstName(student.getFirstName());
         originalStudent.setLastName(student.getLastName());
         view.showStudentEdited(oldFirstName, oldLastName, originalStudent);
+        view.showMainMenu();
     }
 
     private void handleStudentDeleted(String studentNr) {
         Student student = chooseStudentFromTheList(studentNr);
         if (student == null) {
             view.showIncorrectInputMessage();
-            view.showDeleteChooseStudentDialog();
+            view.showDeleteChooseStudent();
         } else {
             model.removeStudent(student);
             view.showStudentDeleted(student);

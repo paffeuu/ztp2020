@@ -83,6 +83,10 @@ public class Model {
     //STUDENT
 
     //Create
+    public void createStudent(Student student) {
+        students.add(student);
+    }
+
     public void createStudent(String firstName, String lastName, int studentId, char gender) {
         Student student = new Student(firstName, lastName, studentId, gender);
         students.add(student);

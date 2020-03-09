@@ -8,7 +8,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 public class View {
     private final static String MAIN_MENU = "\nMENU GŁÓWNE\nLista dostępnych opcji:\n" +
@@ -23,23 +22,25 @@ public class View {
             "Lista dostępnych opcji:\n[1] Dodaj nowego studenta\n[2] Zmień dane studenta\n" +
                     "[3] Usuń studenta\nWybierz: "};
 
+    private final static String STUDENT_CREATE[] = {"Podaj imię: ", "Podaj nazwisko: ",
+            "Podaj nr indeksu: ", "Wybierz płeć (K lub M): "};
+    private final static String STUDENT_CREATED[] = {"Student ", " został utworzony."};
     private final static String CHOOSE_STUDENT[] = {"\nLISTA STUDENTÓW:", "Wybierz studenta: "};
     private final static String STUDENT_EDIT[] = {"Wpisz nowe imię studenta: ", "Wpisz nowe nazwisko studenta: "};
-    private final static String STUDENT_DELETED[] = {"Student ", " został usunięty."};
     private final static String STUDENT_EDITED[] = {"Student ", " zmienil dane na ", "."};
+    private final static String STUDENT_DELETED[] = {"Student ", " został usunięty."};
+
 
     private final static String COURSE_CHOICE = "Podaj nr kursu: ";
 
     private final Model model;
     private Set<ViewListener> listeners;
     private final Scanner scanner;
-    private Pattern numberPattern;
 
     public View(Model model) {
         this.model = model;
         this.listeners = new HashSet<>();
         this.scanner = new Scanner(System.in);
-        this.numberPattern = Pattern.compile("\\d+");
     }
 
     public void showMainMenu() {
@@ -61,25 +62,35 @@ public class View {
         notifyActionListeners(ViewActionType.STUDENT_MENU_CHOICE, null, readInput());
     }
 
-    public void showCreateStudentDialog() {
-
+    public void showStudentCreateForm() {
+        System.out.print(STUDENT_CREATE[0]);
+        String firstName = readInput();
+        System.out.print(STUDENT_CREATE[1]);
+        String lastName = readInput();
+        System.out.print(STUDENT_CREATE[2]);
+        String studentId = readInput();
+        System.out.print(STUDENT_CREATE[3]);
+        String gender = readInput();
+        int studentIdInt = Integer.parseInt(studentId);
+        char genderChar = gender.charAt(0);
+        Student newStudent = new Student(firstName, lastName, studentIdInt, genderChar);
+        notifyActionListeners(ViewActionType.STUDENT_CREATE, newStudent, null);
     }
 
-    public void showEditChooseStudentDialog() {
+    public void showStudentCreated(Student student) {
+        System.out.print(STUDENT_CREATED[0]);
+        System.out.print(student);
+        System.out.println(STUDENT_CREATED[1]);
+    }
+
+    public void showEditChooseStudent() {
         System.out.println(CHOOSE_STUDENT[0]);
         showStudentList();
         System.out.println(CHOOSE_STUDENT[1]);
         notifyActionListeners(ViewActionType.STUDENT_EDIT, null, readInput());
     }
 
-    public void showDeleteChooseStudentDialog() {
-        System.out.println(CHOOSE_STUDENT[0]);
-        showStudentList();
-        System.out.println(CHOOSE_STUDENT[1]);
-        notifyActionListeners(ViewActionType.STUDENT_DELETE, null, readInput());
-    }
-
-    public void showStudentEdit(Student student) {
+    public void showStudentEditForm(Student student) {
         System.out.println(STUDENT_EDIT[0]);
         String firstName = readInput();
         System.out.println(STUDENT_EDIT[1]);
@@ -88,10 +99,11 @@ public class View {
         notifyActionListeners(ViewActionType.STUDENT_EDIT, newStudent, null);
     }
 
-    public void showStudentDeleted(Student student) {
-        System.out.print(STUDENT_DELETED[0]);
-        System.out.print(student.toString());
-        System.out.println(STUDENT_DELETED[1]);
+    public void showDeleteChooseStudent() {
+        System.out.println(CHOOSE_STUDENT[0]);
+        showStudentList();
+        System.out.println(CHOOSE_STUDENT[1]);
+        notifyActionListeners(ViewActionType.STUDENT_DELETE, null, readInput());
     }
 
     public void showStudentEdited(String oldFirstName, String oldLastName, Student student) {
@@ -100,6 +112,12 @@ public class View {
         System.out.print(STUDENT_EDITED[1]);
         System.out.print(student);
         System.out.println(STUDENT_EDITED[2]);
+    }
+
+    public void showStudentDeleted(Student student) {
+        System.out.print(STUDENT_DELETED[0]);
+        System.out.print(student.toString());
+        System.out.println(STUDENT_DELETED[1]);
     }
 
     public void showStudentList() {

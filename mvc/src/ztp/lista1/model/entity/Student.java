@@ -51,6 +51,11 @@ public class Student {
         sb.append(firstName);
         sb.append(" ");
         sb.append(lastName);
+        sb.append(" (");
+        sb.append(studentId);
+        sb.append(" ");
+        sb.append(gender);
+        sb.append(")");
         return sb.toString();
     }
 }
