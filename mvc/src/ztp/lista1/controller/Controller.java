@@ -32,6 +32,13 @@ public class Controller {
             case STUDENT_MENU_CHOICE:
                 handleStudentMenuChoice(data);
                 break;
+            case STUDENT_EDIT:
+                if (object == null) {
+                    handleStudentEdit(data);
+                } else {
+                    handleStudentEdited((Student) object);
+                }
+                break;
             case STUDENT_DELETE:
                 handleStudentDeleted(data);
         }
@@ -78,6 +85,25 @@ public class Controller {
             default:
                 view.showStudentMenu();
         }
+    }
+
+    private void handleStudentEdit(String studentNr) {
+        Student student = chooseStudentFromTheList(studentNr);
+        if (student == null) {
+            view.showIncorrectInputMessage();
+            view.showEditChooseStudentDialog();
+        } else {
+            view.showStudentEdit(student);
+        }
+    }
+
+    private void handleStudentEdited(Student student) {
+        Student originalStudent = model.findStudentByStudentId(student.getStudentId());
+        String oldFirstName = originalStudent.getFirstName();
+        String oldLastName = originalStudent.getLastName();
+        originalStudent.setFirstName(student.getFirstName());
+        originalStudent.setLastName(student.getLastName());
+        view.showStudentEdited(oldFirstName, oldLastName, originalStudent);
     }
 
     private void handleStudentDeleted(String studentNr) {

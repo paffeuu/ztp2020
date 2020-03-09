@@ -100,6 +100,10 @@ public class Model {
         return students;
     }
 
+    public Student findStudentByStudentId(int studentId) {
+        return students.stream().filter(student -> student.getStudentId() == studentId).findFirst().get();
+    }
+
     //Update
     public void setStudentFirstName(int index, String newFirstName) {
         Student student = students.get(index);

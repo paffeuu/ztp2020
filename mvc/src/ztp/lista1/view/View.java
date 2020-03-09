@@ -24,7 +24,9 @@ public class View {
                     "[3] Usuń studenta\nWybierz: "};
 
     private final static String CHOOSE_STUDENT[] = {"\nLISTA STUDENTÓW:", "Wybierz studenta: "};
+    private final static String STUDENT_EDIT[] = {"Wpisz nowe imię studenta: ", "Wpisz nowe nazwisko studenta: "};
     private final static String STUDENT_DELETED[] = {"Student ", " został usunięty."};
+    private final static String STUDENT_EDITED[] = {"Student ", " zmienil dane na ", "."};
 
     private final static String COURSE_CHOICE = "Podaj nr kursu: ";
 
@@ -77,10 +79,27 @@ public class View {
         notifyActionListeners(ViewActionType.STUDENT_DELETE, null, readInput());
     }
 
+    public void showStudentEdit(Student student) {
+        System.out.println(STUDENT_EDIT[0]);
+        String firstName = readInput();
+        System.out.println(STUDENT_EDIT[1]);
+        String lastName = readInput();
+        Student newStudent = new Student(firstName, lastName, student.getStudentId(), student.getGender());
+        notifyActionListeners(ViewActionType.STUDENT_EDIT, newStudent, null);
+    }
+
     public void showStudentDeleted(Student student) {
         System.out.print(STUDENT_DELETED[0]);
         System.out.print(student.toString());
         System.out.println(STUDENT_DELETED[1]);
+    }
+
+    public void showStudentEdited(String oldFirstName, String oldLastName, Student student) {
+        System.out.print(STUDENT_EDITED[0]);
+        System.out.print(oldFirstName + " " + oldLastName);
+        System.out.print(STUDENT_EDITED[1]);
+        System.out.print(student);
+        System.out.println(STUDENT_EDITED[2]);
     }
 
     public void showStudentList() {
