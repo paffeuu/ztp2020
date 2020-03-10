@@ -20,18 +20,9 @@ public class StudentFileRepository implements StudentRepository {
 
     @Override
     public void createStudent(Student student) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(student.getFirstName());
-        sb.append(",");
-        sb.append(student.getLastName());
-        sb.append(",");
-        sb.append(student.getStudentId());
-        sb.append(",");
-        sb.append(student.getGender());
-        sb.append("\n");
-        String courseStr = sb.toString();
         try (FileWriter fileWriter = new FileWriter(file, true)) {
-            fileWriter.append(courseStr);
+            String studentStr = convertStudentObjectToCsvFormat(student);
+            fileWriter.append(studentStr);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -62,11 +53,53 @@ public class StudentFileRepository implements StudentRepository {
 
     @Override
     public void updateStudent(Student student) {
-
+        List<String> lines = new ArrayList<>();
+        try (Scanner scanner = new Scanner(file)) {
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                if (line.length() == 0) {
+                    break;
+                }
+                String[] elements = line.split(",");
+                int studentId = Integer.parseInt(elements[2]);
+                if (studentId == student.getStudentId()) {
+                    Student newStudent =
+                            new Student(student.getFirstName(), student.getLastName(),
+                                    studentId, student.getGender());
+                    String newStudentStr = convertStudentObjectToCsvFormat(newStudent);
+                    lines.add(newStudentStr);
+                } else {
+                    line = line.concat("\n");
+                    lines.add(line);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try (FileWriter fileWriter = new FileWriter(file, false)) {
+            for (String line : lines) {
+                fileWriter.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void deleteStudent(Student student) {
 
+    }
+
+    private String convertStudentObjectToCsvFormat(Student student) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(student.getFirstName());
+        sb.append(",");
+        sb.append(student.getLastName());
+        sb.append(",");
+        sb.append(student.getStudentId());
+        sb.append(",");
+        sb.append(student.getGender());
+        sb.append("\n");
+        return sb.toString();
     }
 }

@@ -130,18 +130,12 @@ public class Model {
     }
 
     //Update
-    public void setStudentFirstName(int index, String newFirstName) {
-        Student student = students.get(index);
+    public void setStudentFirstNameAndLastName(Student student, String newFirstName, String newLastName) {
         if (student != null) {
             student.setFirstName(newFirstName);
-        }
-    }
-
-    public void setStudentLastName(int index, String newLastName) {
-        Student student = students.get(index);
-        if (student != null) {
             student.setLastName(newLastName);
         }
+        studentRepository.updateStudent(student);
     }
 
     //Delete

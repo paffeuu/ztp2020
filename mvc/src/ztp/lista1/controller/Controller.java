@@ -238,8 +238,7 @@ public class Controller {
         Student originalStudent = model.findStudentByStudentId(student.getStudentId());
         String oldFirstName = originalStudent.getFirstName();
         String oldLastName = originalStudent.getLastName();
-        originalStudent.setFirstName(student.getFirstName());
-        originalStudent.setLastName(student.getLastName());
+        model.setStudentFirstNameAndLastName(originalStudent, student.getFirstName(), student.getLastName());
         view.showStudentEdited(oldFirstName, oldLastName, originalStudent);
         view.showMainMenu();
     }
