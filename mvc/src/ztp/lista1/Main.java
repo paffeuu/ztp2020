@@ -1,4 +1,4 @@
-package ztp;
+package ztp.lista1;
 
 import ztp.lista1.controller.Controller;
 import ztp.lista1.model.Model;
