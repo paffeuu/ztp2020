@@ -56,6 +56,7 @@ public class Controller {
                 } else {
                     handleCourseStudentRemoved((Course) object, data);
                 }
+                break;
             case STUDENT_MENU_CHOICE:
                 handleStudentMenuChoice(data);
                 break;
@@ -82,6 +83,8 @@ public class Controller {
             case "2":
                 view.showStudentMenu();
                 break;
+            case "0":
+                break;
             default:
                 view.showIncorrectInputMessage();
                 view.showMainMenu();
@@ -105,6 +108,9 @@ public class Controller {
             case "5":
                 view.showRemoveStudentChooseCourse();
                 break;
+            case "0":
+                view.showMainMenu();
+                break;
             default:
                 view.showIncorrectInputMessage();
                 view.showCourseMenu();
@@ -121,6 +127,9 @@ public class Controller {
                 break;
             case "3":
                 view.showDeleteChooseStudent();
+                break;
+            case "0":
+                view.showMainMenu();
                 break;
             default:
                 view.showStudentMenu();

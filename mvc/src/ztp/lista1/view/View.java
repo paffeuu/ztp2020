@@ -12,13 +12,15 @@ import java.util.Set;
 
 public class View {
     private static final String MAIN_MENU = "\nMENU GŁÓWNE\nLista dostępnych opcji:\n" +
-            "[1] Wyświetl listę kursów\n[2] Wyświetl listę studentów\nWybierz: ";
+            "[1] Wyświetl listę kursów\n[2] Wyświetl listę studentów\n[0] Zakończ\nWybierz: ";
     private static final String COURSE_MENU[] = {
             "\nMENU KURSÓW\n",
             "Lista dostępnych opcji:\n[1] Dodaj nowy kurs\n[2] Zmień dane kursu\n[3] Usuń kurs\n" +
-                    "[4] Zapisz studenta na kurs\n[5] Wypisz studenta z kursu\nWybierz: "
+                    "[4] Zapisz studenta na kurs\n[5] Wypisz studenta z kursu\n" +
+                    "[0] Powrót do menu głównego\nWybierz: "
     };
-    private static final String COURSE_CREATE[] = {"Podaj nazwę: ", "Podaj nr semestru: ", "Podaj nazwisko prowadzącego: "};
+    private static final String COURSE_CREATE[] = {"Podaj nazwę: ", "Podaj nr semestru: ",
+            "Podaj nazwisko prowadzącego: "};
     private static final String COURSE_CREATED[] = {"Kurs ", " został utworzony."};
     private static final String CHOOSE_COURSE[] = {"\nLISTA KURSÓW:", "Wybierz kurs: "};
     private static final String COURSE_EDIT[] = {"Wpisz nowy nr semestru: ", "Wpisz nowe nazwisko prowadzącego: "};
@@ -29,7 +31,7 @@ public class View {
     private static final String STUDENT_MENU[] = {
             "\nMENU STUDENTÓW\n",
             "Lista dostępnych opcji:\n[1] Dodaj nowego studenta\n[2] Zmień dane studenta\n" +
-                    "[3] Usuń studenta\nWybierz: "};
+                    "[3] Usuń studenta\n[0] Powrót do menu głównego\nWybierz: "};
 
     private static final String STUDENT_CREATE[] = {"Podaj imię: ", "Podaj nazwisko: ",
             "Podaj nr indeksu: ", "Wybierz płeć (K lub M): "};
