@@ -24,6 +24,8 @@ public class View {
     private static final String COURSE_EDIT[] = {"Wpisz nowy nr semestru: ", "Wpisz nowe nazwisko prowadzącego: "};
     private static final String COURSE_EDITED[] = {"Kurs ", " zmienil dane na ", "."};
     private static final String COURSE_DELETED[] = {"Kurs ", " został usunięty."};
+    private static final String COURSE_STUDENT_ADDED[] = {"Student ", " został zapisany na kurs ", "."};
+    private static final String COURSE_STUDENT_REMOVED[] = {"Student ", "został usunięty z kursu ", "."};
     private static final String STUDENT_MENU[] = {
             "\nMENU STUDENTÓW\n",
             "Lista dostępnych opcji:\n[1] Dodaj nowego studenta\n[2] Zmień dane studenta\n" +
@@ -94,13 +96,6 @@ public class View {
         notifyActionListeners(ViewActionType.COURSE_EDIT, newCourse, null);
     }
 
-    public void showDeleteChooseCourse() {
-        System.out.println(CHOOSE_COURSE[0]);
-        showCourseList();
-        System.out.println(CHOOSE_COURSE[1]);
-        notifyActionListeners(ViewActionType.COURSE_DELETE, null, readInput());
-    }
-
     public void showCourseEdited(int oldSemester, String oldTeacherName, Course course) {
         System.out.print(COURSE_EDITED[0]);
         System.out.print("(" + oldTeacherName + " " + oldSemester + ")");
@@ -109,10 +104,61 @@ public class View {
         System.out.println(COURSE_EDITED[2]);
     }
 
+    public void showDeleteChooseCourse() {
+        System.out.println(CHOOSE_COURSE[0]);
+        showCourseList();
+        System.out.println(CHOOSE_COURSE[1]);
+        notifyActionListeners(ViewActionType.COURSE_DELETE, null, readInput());
+    }
+
     public void showCourseDeleted(Course course) {
         System.out.print(COURSE_DELETED[0]);
         System.out.print(course.toString());
         System.out.println(COURSE_DELETED[1]);
+    }
+
+    public void showAddStudentChooseCourse() {
+        System.out.println(CHOOSE_COURSE[0]);
+        showCourseList();
+        System.out.println(CHOOSE_COURSE[1]);
+        notifyActionListeners(ViewActionType.COURSE_ADD_STUDENT, null, readInput());
+    }
+
+    public void showCourseAddStudentChooseForm(Course course) {
+        System.out.println(CHOOSE_STUDENT[0]);
+        showStudentList(null);
+        System.out.println(CHOOSE_STUDENT[1]);
+        notifyActionListeners(ViewActionType.COURSE_ADD_STUDENT, course, readInput());
+    }
+
+    public void showCourseStudentAdded(Course course, Student student) {
+        System.out.print(COURSE_STUDENT_ADDED[0]);
+        System.out.print(student);
+        System.out.print(COURSE_STUDENT_ADDED[1]);
+        System.out.print(course);
+        System.out.print(COURSE_STUDENT_ADDED[2]);
+    }
+
+    public void showRemoveStudentChooseCourse() {
+        System.out.println(CHOOSE_COURSE[0]);
+        showCourseList();
+        System.out.println(CHOOSE_COURSE[1]);
+        notifyActionListeners(ViewActionType.COURSE_REMOVE_STUDENT, null, readInput());
+    }
+
+    public void showCourseRemoveStudentChooseForm(Course course) {
+        System.out.println(CHOOSE_STUDENT[0]);
+        showStudentList(course.getSignedUpStudents());
+        System.out.println(CHOOSE_STUDENT[1]);
+        notifyActionListeners(ViewActionType.COURSE_REMOVE_STUDENT, course, readInput());
+    }
+
+    public void showCourseStudentRemoved(Course course, Student student) {
+        System.out.print(COURSE_STUDENT_REMOVED[0]);
+        System.out.print(student);
+        System.out.print(COURSE_STUDENT_REMOVED[1]);
+        System.out.print(course);
+        System.out.print(COURSE_STUDENT_REMOVED[2]);
     }
 
     private void showCourseList() {
@@ -126,7 +172,7 @@ public class View {
 
     public void showStudentMenu() {
         System.out.println(STUDENT_MENU[0]);
-        showStudentList();
+        showStudentList(null);
         System.out.println(STUDENT_MENU[1]);
         notifyActionListeners(ViewActionType.STUDENT_MENU_CHOICE, null, readInput());
     }
@@ -154,7 +200,7 @@ public class View {
 
     public void showEditChooseStudent() {
         System.out.println(CHOOSE_STUDENT[0]);
-        showStudentList();
+        showStudentList(null);
         System.out.println(CHOOSE_STUDENT[1]);
         notifyActionListeners(ViewActionType.STUDENT_EDIT, null, readInput());
     }
@@ -170,7 +216,7 @@ public class View {
 
     public void showDeleteChooseStudent() {
         System.out.println(CHOOSE_STUDENT[0]);
-        showStudentList();
+        showStudentList(null);
         System.out.println(CHOOSE_STUDENT[1]);
         notifyActionListeners(ViewActionType.STUDENT_DELETE, null, readInput());
     }
@@ -189,9 +235,11 @@ public class View {
         System.out.println(STUDENT_DELETED[1]);
     }
 
-    private void showStudentList() {
+    private void showStudentList(List<Student> students) {
         System.out.println("Studenci:");
-        List<Student> students = model.readAllStudents();
+        if (students == null) {
+            students = model.readAllStudents();
+        }
         for (int i = 0; i < students.size(); i++) {
             System.out.print(i + " ");
             System.out.println(students.get(i));

@@ -71,17 +71,13 @@ public class Model {
         }
     }
 
-    public void addStudentToCourse(int indexCourse, int indexStudent) {
-        Course course = courses.get(indexCourse);
-        Student student = students.get(indexStudent);
-        if (course != null && student != null) {
+    public void addStudentToCourse(Course course, Student student) {
+        if (course != null && student != null && !course.getSignedUpStudents().contains(student)) {
             course.addStudent(student);
         }
     }
 
-    public void removeStudentFromCourse(int indexCourse, int indexStudent) {
-        Course course = courses.get(indexCourse);
-        Student student = students.get(indexStudent);
+    public void removeStudentFromCourse(Course course, Student student) {
         if (course != null && student != null) {
             course.removeStudent(student);
         }

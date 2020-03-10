@@ -24,7 +24,6 @@ public class Course {
 
     public void removeStudent(Student removedStudent) {
         signedUpStudents.remove(removedStudent);
-        sort();
     }
 
     private void sort() {
@@ -71,7 +70,9 @@ public class Course {
         sb.append(teacherName);
         sb.append(" ");
         sb.append(semester);
-        sb.append(")");
+        sb.append("), studenci: [");
+        signedUpStudents.forEach(sb::append);
+        sb.append("]");
         return sb.toString();
     }
 }

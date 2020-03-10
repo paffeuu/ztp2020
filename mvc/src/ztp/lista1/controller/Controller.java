@@ -6,6 +6,7 @@ import ztp.lista1.model.entity.Student;
 import ztp.lista1.view.ViewActionType;
 import ztp.lista1.view.View;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class Controller {
@@ -42,6 +43,19 @@ public class Controller {
             case COURSE_DELETE:
                 handleCourseDeleted(data);
                 break;
+            case COURSE_ADD_STUDENT:
+                if (object == null) {
+                    handleCourseAddStudent(data);
+                } else {
+                    handleCourseStudentAdded((Course) object, data);
+                }
+                break;
+            case COURSE_REMOVE_STUDENT:
+                if (object == null) {
+                    handleCourseRemoveStudent(data);
+                } else {
+                    handleCourseStudentRemoved((Course) object, data);
+                }
             case STUDENT_MENU_CHOICE:
                 handleStudentMenuChoice(data);
                 break;
@@ -86,7 +100,11 @@ public class Controller {
                 view.showDeleteChooseCourse();
                 break;
             case "4":
+                view.showAddStudentChooseCourse();
+                break;
             case "5":
+                view.showRemoveStudentChooseCourse();
+                break;
             default:
                 view.showIncorrectInputMessage();
                 view.showCourseMenu();
@@ -147,6 +165,50 @@ public class Controller {
         }
     }
 
+    private void handleCourseAddStudent(String courseNr) {
+        Course course = chooseCourseFromTheList(courseNr);
+        if (course == null) {
+            view.showIncorrectInputMessage();
+            view.showAddStudentChooseCourse();
+        } else {
+            view.showCourseAddStudentChooseForm(course);
+        }
+    }
+
+    private void handleCourseStudentAdded(Course course, String studentNr) {
+        Student student = chooseStudentFromTheList(studentNr, null);
+        if (student == null) {
+            view.showIncorrectInputMessage();
+            view.showCourseAddStudentChooseForm(course);
+        } else {
+            model.addStudentToCourse(course, student);
+            view.showCourseStudentAdded(course, student);
+            view.showMainMenu();
+        }
+    }
+
+    private void handleCourseRemoveStudent(String courseNr) {
+        Course course = chooseCourseFromTheList(courseNr);
+        if (course == null) {
+            view.showIncorrectInputMessage();
+            view.showRemoveStudentChooseCourse();
+        } else {
+            view.showCourseRemoveStudentChooseForm(course);
+        }
+    }
+
+    private void handleCourseStudentRemoved(Course course, String studentNr) {
+        Student student = chooseStudentFromTheList(studentNr, course.getSignedUpStudents());
+        if (student == null) {
+            view.showIncorrectInputMessage();
+            view.showCourseRemoveStudentChooseForm(course);
+        } else {
+            model.removeStudentFromCourse(course, student);
+            view.showCourseStudentRemoved(course, student);
+            view.showMainMenu();
+        }
+    }
+
     private void handleStudentCreated(Student student) {
         model.createStudent(student);
         view.showStudentCreated(student);
@@ -154,7 +216,7 @@ public class Controller {
     }
 
     private void handleStudentEdit(String studentNr) {
-        Student student = chooseStudentFromTheList(studentNr);
+        Student student = chooseStudentFromTheList(studentNr, null);
         if (student == null) {
             view.showIncorrectInputMessage();
             view.showEditChooseStudent();
@@ -174,7 +236,7 @@ public class Controller {
     }
 
     private void handleStudentDeleted(String studentNr) {
-        Student student = chooseStudentFromTheList(studentNr);
+        Student student = chooseStudentFromTheList(studentNr, null);
         if (student == null) {
             view.showIncorrectInputMessage();
             view.showDeleteChooseStudent();
@@ -198,10 +260,15 @@ public class Controller {
         return null;
     }
 
-    private Student chooseStudentFromTheList(String input) {
+    private Student chooseStudentFromTheList(String input, List<Student> students) {
+        if (students == null) {
+            students = model.readAllStudents();
+        }
         if (numberPattern.matcher(input).matches()) {
             int number = Integer.parseInt(input);
-            return model.readStudent(number);
+            if (number < students.size()) {
+                return students.get(number);
+            }
         }
         return null;
     }
