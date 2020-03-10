@@ -2,6 +2,10 @@ package ztp.lista1.model;
 
 import ztp.lista1.model.entity.Course;
 import ztp.lista1.model.entity.Student;
+import ztp.lista1.model.repository.CourseRepository;
+import ztp.lista1.model.repository.StudentRepository;
+import ztp.lista1.model.repository.file.CourseFileRepository;
+import ztp.lista1.model.repository.file.StudentFileRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,22 +14,25 @@ public class Model {
     private final List<Course> courses;
     private final List<Student> students;
 
+    private StudentRepository studentRepository;
+    private CourseRepository courseRepository;
+
     public Model() {
-        this.courses = new ArrayList<>();
-        this.students = new ArrayList<>();
+        this.studentRepository = new StudentFileRepository("student.csv");
+        this.courseRepository = new CourseFileRepository("course.csv", studentRepository);
 
+        this.students = studentRepository.readStudents();
+        this.courses = courseRepository.readCourses();
         //MOCK
-        students.add(new Student("Pawel", "Kowanski", 234234, 'M'));
-        students.add(new Student("Mariusz", "Wisniewski", 345345, 'M'));
-        students.add(new Student("Janina", "Truskawska", 555555, 'K'));
-        students.add(new Student("Tomasz", "Kowal", 333333, 'M'));
-        students.add(new Student("Marianna", "Wisniak", 567888, 'K'));
+//        createStudent(new Student("Pawel", "Kowanski", 234234, 'M'));
+//        createStudent(new Student("Mariusz", "Wisniewski", 345345, 'M'));
+//        createStudent(new Student("Janina", "Truskawska", 555555, 'K'));
+//        createStudent(new Student("Tomasz", "Kowal", 333333, 'M'));
+//        createStudent(new Student("Marianna", "Wisniak", 567888, 'K'));
 
-        courses.add(new Course("Matematyka", 2, "Woźniak"));
-        courses.add(new Course("Mechanika kwantowa", 4, "Wojnarowicz"));
-        courses.add(new Course("Programowanie obiektowe", 5, "Misztela"));
-
-
+//        createCourse(new Course("Matematyka", 2, "Woźniak"));
+//        createCourse(new Course("Mechanika kwantowa", 4, "Wojnarowicz"));
+//        createCourse(new Course("Programowanie obiektowe", 5, "Misztela"));
     }
 
     //COURSE
@@ -38,6 +45,7 @@ public class Model {
 
     public void createCourse(Course course) {
         courses.add(course);
+        courseRepository.createCourse(course);
     }
 
     //Read
@@ -97,6 +105,7 @@ public class Model {
     //Create
     public void createStudent(Student student) {
         students.add(student);
+        studentRepository.createStudent(student);
     }
 
     public void createStudent(String firstName, String lastName, int studentId, char gender) {
