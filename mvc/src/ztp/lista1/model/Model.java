@@ -7,22 +7,26 @@ import ztp.lista1.model.repository.StudentRepository;
 import ztp.lista1.model.repository.file.CourseFileRepository;
 import ztp.lista1.model.repository.file.StudentFileRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Model {
-    private final List<Course> courses;
-    private final List<Student> students;
+    private List<Course> courses;
+    private List<Student> students;
 
     private StudentRepository studentRepository;
     private CourseRepository courseRepository;
 
     public Model() {
+        this.courseRepository = new CourseFileRepository("course.csv");
         this.studentRepository = new StudentFileRepository("student.csv");
-        this.courseRepository = new CourseFileRepository("course.csv", studentRepository);
+        if (this.courseRepository instanceof CourseFileRepository) {
+            ((CourseFileRepository) this.courseRepository).setStudentRepository(studentRepository);
+        }
+        if (this.studentRepository instanceof StudentFileRepository) {
+            ((StudentFileRepository) this.studentRepository).setCourseRepository(courseRepository);
+        }
+        update();
 
-        this.students = studentRepository.readStudents();
-        this.courses = courseRepository.readCourses();
         //MOCK
 //        createStudent(new Student("Pawel", "Kowanski", 234234, 'M'));
 //        createStudent(new Student("Mariusz", "Wisniewski", 345345, 'M'));
@@ -35,17 +39,21 @@ public class Model {
 //        createCourse(new Course("Programowanie obiektowe", 5, "Misztela"));
     }
 
+
+    private void update() {
+        this.students = studentRepository.readStudents();
+        this.courses = courseRepository.readCourses();
+    }
     //COURSE
 
     //Create
-    public void createCourse(String name, int semester, String teacherName) {
-        Course newCourse = new Course(name, semester, teacherName);
+    public boolean createCourse(Course newCourse) {
+        if (courses.stream().anyMatch(course -> newCourse.getName().equals(course.getName()))) {
+            return false;
+        }
         courses.add(newCourse);
-    }
-
-    public void createCourse(Course course) {
-        courses.add(course);
-        courseRepository.createCourse(course);
+        courseRepository.createCourse(newCourse);
+        return true;
     }
 
     //Read
@@ -65,39 +73,32 @@ public class Model {
     }
 
     //Update
-    public void setCourseSemester(int index, int semester) {
-        Course course = courses.get(index);
+    public void setCourseSemesterAndTeacherName(Course course, int semester, String teacherName) {
         if (course != null) {
             course.setSemester(semester);
-        }
-    }
-
-    public void setCourseTeacherName(int index, String newTeacherName) {
-        Course course = courses.get(index);
-        if (course != null) {
-            course.setTeacherName(newTeacherName);
+            course.setTeacherName(teacherName);
+            courseRepository.updateCourse(course);
         }
     }
 
     public void addStudentToCourse(Course course, Student student) {
         if (course != null && student != null && !course.getSignedUpStudents().contains(student)) {
             course.addStudent(student);
+            courseRepository.updateCourse(course);
         }
     }
 
     public void removeStudentFromCourse(Course course, Student student) {
         if (course != null && student != null) {
             course.removeStudent(student);
+            courseRepository.updateCourse(course);
         }
     }
 
     //Delete
-    public void removeCourse(int index) {
-        courses.remove(index);
-    }
-
     public void removeCourse(Course course) {
         courses.remove(course);
+        courseRepository.deleteCourse(course);
     }
 
     //STUDENT
@@ -108,18 +109,7 @@ public class Model {
         studentRepository.createStudent(student);
     }
 
-    public void createStudent(String firstName, String lastName, int studentId, char gender) {
-        Student student = new Student(firstName, lastName, studentId, gender);
-        students.add(student);
-    }
-
     //Read
-    public Student readStudent(int index) {
-        if (index >= students.size()) {
-            return null;
-        }
-        return students.get(index);
-    }
 
     public List<Student> readAllStudents() {
         return students;
@@ -139,12 +129,10 @@ public class Model {
     }
 
     //Delete
-    public void removeStudent(int index) {
-        students.remove(index);
-    }
-
     public void removeStudent(Student student) {
         students.remove(student);
+        studentRepository.deleteStudent(student);
+        update();
     }
 
 

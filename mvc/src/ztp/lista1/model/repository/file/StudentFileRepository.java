@@ -1,6 +1,8 @@
 package ztp.lista1.model.repository.file;
 
+import ztp.lista1.model.entity.Course;
 import ztp.lista1.model.entity.Student;
+import ztp.lista1.model.repository.CourseRepository;
 import ztp.lista1.model.repository.StudentRepository;
 
 import java.io.File;
@@ -13,6 +15,7 @@ import java.util.Scanner;
 
 public class StudentFileRepository implements StudentRepository {
     private final File file;
+    private CourseRepository courseRepository;
 
     public StudentFileRepository(String file) {
         this.file = new File(file);
@@ -87,7 +90,38 @@ public class StudentFileRepository implements StudentRepository {
 
     @Override
     public void deleteStudent(Student student) {
+        courseRepository.readCourses()
+                .stream()
+                .filter(course -> course.containsStudent(student))
+                .forEach(course -> {
+                    course.removeStudent(student);
+                    courseRepository.updateCourse(course);
+                });
 
+        List<String> lines = new ArrayList<>();
+        try (Scanner scanner = new Scanner(file)) {
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                if (line.length() == 0) {
+                    break;
+                }
+                String[] elements = line.split(",");
+                int studentId = Integer.parseInt(elements[2]);
+                if (studentId != student.getStudentId()) {
+                    line = line.concat("\n");
+                    lines.add(line);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try (FileWriter fileWriter = new FileWriter(file, false)) {
+            for (String line : lines) {
+                fileWriter.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private String convertStudentObjectToCsvFormat(Student student) {
@@ -101,5 +135,9 @@ public class StudentFileRepository implements StudentRepository {
         sb.append(student.getGender());
         sb.append("\n");
         return sb.toString();
+    }
+
+    public void setCourseRepository(CourseRepository courseRepository) {
+        this.courseRepository = courseRepository;
     }
 }

@@ -22,6 +22,7 @@ public class View {
     private static final String COURSE_CREATE[] = {"Podaj nazwę: ", "Podaj nr semestru: ",
             "Podaj nazwisko prowadzącego: "};
     private static final String COURSE_CREATED[] = {"Kurs ", " został utworzony."};
+    private static final String COURSE_NOT_CREATED[] = {"Kurs ", " nie mógł zostać utworzony. Istnieje kurs o tej samej nazwie."};
     private static final String CHOOSE_COURSE[] = {"\nLISTA KURSÓW:", "Wybierz kurs: "};
     private static final String COURSE_EDIT[] = {"Wpisz nowy nr semestru: ", "Wpisz nowe nazwisko prowadzącego: "};
     private static final String COURSE_EDITED[] = {"Kurs ", " zmienil dane na ", "."};
@@ -79,6 +80,12 @@ public class View {
         System.out.print(COURSE_CREATED[0]);
         System.out.print(course);
         System.out.print(COURSE_CREATED[1]);
+    }
+
+    public void showCourseNotCreated(Course course) {
+        System.out.print(COURSE_NOT_CREATED[0]);
+        System.out.print(course);
+        System.out.print(COURSE_NOT_CREATED[1]);
     }
 
     public void showEditChooseCourse() {

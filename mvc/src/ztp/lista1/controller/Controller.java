@@ -137,8 +137,12 @@ public class Controller {
     }
 
     private void handleCourseCreated(Course course) {
-        model.createCourse(course);
-        view.showCourseCreated(course);
+        if (model.createCourse(course)) {
+            view.showCourseCreated(course);
+        } else {
+            view.showCourseNotCreated(course);
+        }
+
         view.showMainMenu();
     }
 
@@ -156,8 +160,7 @@ public class Controller {
         Course originalCourse = model.findCourseByName(course.getName());
         int oldSemester = originalCourse.getSemester();
         String oldTeacherName = originalCourse.getTeacherName();
-        originalCourse.setSemester(course.getSemester());
-        originalCourse.setTeacherName(course.getTeacherName());
+        model.setCourseSemesterAndTeacherName(originalCourse, course.getSemester(), course.getTeacherName());
         view.showCourseEdited(oldSemester, oldTeacherName, originalCourse);
         view.showMainMenu();
     }

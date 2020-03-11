@@ -23,7 +23,11 @@ public class Course {
     }
 
     public void removeStudent(Student removedStudent) {
-        signedUpStudents.remove(removedStudent);
+        signedUpStudents.removeIf(student -> student.getStudentId() == removedStudent.getStudentId());
+    }
+
+    public boolean containsStudent(Student student) {
+        return signedUpStudents.stream().anyMatch(stud -> stud.getStudentId() == student.getStudentId());
     }
 
     private void sort() {
