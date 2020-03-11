@@ -76,6 +76,7 @@ public class Controller {
     }
 
     private void handleMainMenuChoice(String menuChoice) {
+        boolean exit = false;
         switch (menuChoice) {
             case "1":
                 view.showCourseMenu();
@@ -84,10 +85,13 @@ public class Controller {
                 view.showStudentMenu();
                 break;
             case "0":
+                exit = true;
                 break;
             default:
                 view.showIncorrectInputMessage();
-                view.showMainMenu();
+        }
+        if (!exit) {
+            view.showMainMenu();
         }
     }
 
@@ -109,7 +113,6 @@ public class Controller {
                 view.showRemoveStudentChooseCourse();
                 break;
             case "0":
-                view.showMainMenu();
                 break;
             default:
                 view.showIncorrectInputMessage();
@@ -129,7 +132,6 @@ public class Controller {
                 view.showDeleteChooseStudent();
                 break;
             case "0":
-                view.showMainMenu();
                 break;
             default:
                 view.showStudentMenu();
@@ -142,8 +144,6 @@ public class Controller {
         } else {
             view.showCourseNotCreated(course);
         }
-
-        view.showMainMenu();
     }
 
     private void handleCourseEdit(String courseNr) {
@@ -162,7 +162,6 @@ public class Controller {
         String oldTeacherName = originalCourse.getTeacherName();
         model.setCourseSemesterAndTeacherName(originalCourse, course.getSemester(), course.getTeacherName());
         view.showCourseEdited(oldSemester, oldTeacherName, originalCourse);
-        view.showMainMenu();
     }
 
     private void handleCourseDeleted(String courseNr) {
@@ -173,7 +172,6 @@ public class Controller {
         } else {
             model.removeCourse(course);
             view.showCourseDeleted(course);
-            view.showMainMenu();
         }
     }
 
@@ -195,7 +193,6 @@ public class Controller {
         } else {
             model.addStudentToCourse(course, student);
             view.showCourseStudentAdded(course, student);
-            view.showMainMenu();
         }
     }
 
@@ -217,14 +214,12 @@ public class Controller {
         } else {
             model.removeStudentFromCourse(course, student);
             view.showCourseStudentRemoved(course, student);
-            view.showMainMenu();
         }
     }
 
     private void handleStudentCreated(Student student) {
         model.createStudent(student);
         view.showStudentCreated(student);
-        view.showMainMenu();
     }
 
     private void handleStudentEdit(String studentNr) {
@@ -243,7 +238,6 @@ public class Controller {
         String oldLastName = originalStudent.getLastName();
         model.setStudentFirstNameAndLastName(originalStudent, student.getFirstName(), student.getLastName());
         view.showStudentEdited(oldFirstName, oldLastName, originalStudent);
-        view.showMainMenu();
     }
 
     private void handleStudentDeleted(String studentNr) {
@@ -254,7 +248,6 @@ public class Controller {
         } else {
             model.removeStudent(student);
             view.showStudentDeleted(student);
-            view.showMainMenu();
         }
     }
 
