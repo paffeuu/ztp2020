@@ -32,6 +32,8 @@ public class JDBCConnector {
                     return null;
                 case SELECT_STUDENT:
                     return selectStudent((int) object, conn);
+                case SELECT_STUDENTS:
+                    return selectStudents(conn);
                 case UPDATE_STUDENT:
                     updateStudent((Student) object, conn);
                     return null;
@@ -43,6 +45,8 @@ public class JDBCConnector {
                     return null;
                 case SELECT_COURSE:
                     return selectCourse((String) object, conn);
+                case SELECT_COURSES:
+                    return selectCourses(conn);
                 case UPDATE_COURSE:
                     updateCourse((Course) object, conn);
                     return null;
@@ -103,6 +107,27 @@ public class JDBCConnector {
             return new Student(firstName, lastName, studentId, gender);
         }
         return null;
+    }
+
+    private List<Student> selectStudents(Connection conn) throws SQLException {
+        Statement stmt = conn.createStatement();
+        ResultSet rs;
+
+        StringBuilder queryBuilder = new StringBuilder();
+        queryBuilder.append(SQLUtils.SELECT_STUDENTS);
+
+        String query = queryBuilder.toString();
+
+        List<Student> students = new ArrayList<>();
+        rs = stmt.executeQuery(query);
+        while (rs.next()) {
+            String firstName = rs.getString("FirstName");
+            String lastName = rs.getString("LastName");
+            int studentId = rs.getInt("StudentId");
+            char gender = rs.getString("Gender").charAt(0);
+            students.add(new Student(firstName, lastName, studentId, gender));
+        }
+        return students;
     }
 
     private void updateStudent(Student student, Connection conn) throws SQLException {
@@ -191,6 +216,33 @@ public class JDBCConnector {
             }
         }
         return course;
+    }
+
+    private List<Course> selectCourses(Connection conn) throws SQLException {
+        Statement stmt = conn.createStatement();
+        ResultSet rs;
+
+        StringBuilder queryBuilder = new StringBuilder();
+        queryBuilder.append(SQLUtils.SELECT_COURSES);
+
+        String query = queryBuilder.toString();
+
+        List<Course> courses = new ArrayList<>();
+        rs = stmt.executeQuery(query);
+        while (rs.next()) {
+            String name = rs.getString("Name");
+            int courseId = rs.getInt("CourseId");
+            int semester = rs.getInt("Semester");
+            String teacherName = rs.getString("TeacherName");
+            Course course =  new Course(name, semester, teacherName);
+            List<Integer> studentIds = selectCourseStudentByCourseId(courseId, conn);
+            for (Integer studentId : studentIds) {
+                Student student = selectStudent(studentId, conn);
+                course.addStudent(student);
+            }
+            courses.add(course);
+        }
+        return courses;
     }
 
     private void updateCourse(Course course, Connection conn) throws SQLException {

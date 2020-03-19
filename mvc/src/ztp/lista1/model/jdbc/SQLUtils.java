@@ -3,6 +3,7 @@ package ztp.lista1.model.jdbc;
 public class SQLUtils {
     public final static String INSERT_STUDENT[] = {"INSERT INTO Student VALUES('", "')"};
     public final static String SELECT_STUDENT = "SELECT * FROM Student WHERE StudentId = ";
+    public final static String SELECT_STUDENTS = "SELECT * FROM Student";
     public final static String UPDATE_STUDENT[] = {
             "UPDATE Student SET FirstName = '",
             "', LastName = '",
@@ -12,6 +13,7 @@ public class SQLUtils {
 
     public final static String INSERT_COURSE[] = {"INSERT INTO Course VALUES ('", ")"};
     public final static String SELECT_COURSE[] = {"SELECT * FROM Course WHERE Name = '", "'"};
+    public final static String SELECT_COURSES = "SELECT * FROM Course";
     public final static String UPDATE_COURSE[] = {
             "UPDATE Course SET Semester = ",
             ", TeacherName = '",

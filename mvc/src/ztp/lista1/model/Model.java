@@ -4,6 +4,8 @@ import ztp.lista1.model.entity.Course;
 import ztp.lista1.model.entity.Student;
 import ztp.lista1.model.repository.CourseRepository;
 import ztp.lista1.model.repository.StudentRepository;
+import ztp.lista1.model.repository.database.CourseDbRepostitory;
+import ztp.lista1.model.repository.database.StudentDbRepository;
 import ztp.lista1.model.repository.file.CourseFileRepository;
 import ztp.lista1.model.repository.file.StudentFileRepository;
 
@@ -17,8 +19,10 @@ public class Model {
     private CourseRepository courseRepository;
 
     public Model() {
-        this.courseRepository = new CourseFileRepository("course.csv");
-        this.studentRepository = new StudentFileRepository("student.csv");
+//        this.courseRepository = new CourseFileRepository("course.csv");
+//        this.studentRepository = new StudentFileRepository("student.csv");
+        this.courseRepository = new CourseDbRepostitory();
+        this.studentRepository = new StudentDbRepository();
         if (this.courseRepository instanceof CourseFileRepository) {
             ((CourseFileRepository) this.courseRepository).setStudentRepository(studentRepository);
         }
