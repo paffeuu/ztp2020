@@ -3,6 +3,7 @@ package ztp.lista2;
 import ztp.lista2.model.*;
 import ztp.lista2.utils.Container;
 import ztp.lista2.utils.Display;
+import ztp.lista2.utils.Pair;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -10,7 +11,8 @@ import java.util.Arrays;
 public class Main {
     public static void main(String[] args) {
         zad11();
-        zad12();
+        zad12a();
+        zad12b();
     }
 
     private static void zad11() {
@@ -45,7 +47,7 @@ public class Main {
 //        display.showPersonData(employeeContainer);
     }
 
-    private static void zad12() {
+    private static void zad12a() {
         Container<Dog> dogContainer = new Container<>();
         Dog dog = new Dog("Reksio");
         dogContainer.addObject(dog);
@@ -79,6 +81,28 @@ public class Main {
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void zad12b() {
+        try {
+            Pair<String> stringPair = new Pair<String>("a", "b");
+            System.out.println(stringPair);
+            Pair<String> stringPair2 = stringPair.clone();
+            System.out.println(stringPair2);
+
+            Pair<Integer> integerPair = new Pair<>(10, 20);
+            System.out.println(integerPair);
+            Pair<Integer> integerPair2 = integerPair.clone();
+            System.out.println(integerPair2);
+
+            Pair<Dog> dogPair = new Pair<>(new Dog("Burek"), new Dog("Reksio"));
+            System.out.println(dogPair);
+            Pair<Dog> dogPair2 = dogPair.clone();
+            System.out.println(dogPair2);
+
+        } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
     }
