@@ -36,7 +36,7 @@ public class RandomDataGenerator {
             country.setCities(cityList);
             for (City city : cityList) {
                 List<Inhabitant> inhabitantList = generateRandomInhabitants(inhabitantNr);
-                city.setInhabitants(new HashSet<>(inhabitantList));
+                city.setInhabitants(inhabitantList);
             }
         }
         return countryList;

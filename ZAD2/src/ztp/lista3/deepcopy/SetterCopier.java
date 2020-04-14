@@ -23,11 +23,11 @@ public class SetterCopier implements CountryCopier {
                 City newCity = new City();
                 newCityList.add(newCity);
                 newCity.setName(city.getName());
-                Set<Inhabitant> newInhabitantSet = new HashSet<>();
-                newCity.setInhabitants(newInhabitantSet);
+                List<Inhabitant> newInhabitantList = new ArrayList<>();
+                newCity.setInhabitants(newInhabitantList);
                 for (Inhabitant inhabitant : city.getInhabitants()) {
                     Inhabitant newInhabitant = new Inhabitant();
-                    newInhabitantSet.add(newInhabitant);
+                    newInhabitantList.add(newInhabitant);
                     newInhabitant.setFirstName(inhabitant.getFirstName());
                     newInhabitant.setLastName(inhabitant.getLastName());
                 }
