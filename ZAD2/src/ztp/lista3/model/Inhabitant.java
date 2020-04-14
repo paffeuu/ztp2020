@@ -9,6 +9,10 @@ public class Inhabitant {
         this.lastName = lastName;
     }
 
+    public Inhabitant(Inhabitant inhabitant) {
+        this(inhabitant.firstName, inhabitant.lastName);
+    }
+
     @Override
     public String toString() {
         return "Inhabitant{" +

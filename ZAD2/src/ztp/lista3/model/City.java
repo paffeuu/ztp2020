@@ -12,6 +12,15 @@ public class City {
         this.inhabitants = new HashSet<>();
     }
 
+    public City(City city) {
+        this(city.name);
+        this.inhabitants = new HashSet<>();
+        for (Inhabitant inhabitant : city.inhabitants) {
+            Inhabitant newInhabitant = new Inhabitant(inhabitant);
+            this.inhabitants.add(newInhabitant);
+        }
+    }
+
     public void setInhabitants(Set<Inhabitant> inhabitants) {
         this.inhabitants = inhabitants;
     }

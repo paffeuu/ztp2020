@@ -19,9 +19,9 @@ public class RandomDataGenerator {
             "Marek", "Andrzej", "Jarek", "Wiesław", "Miłosz", "Tomek", "Jakub", "Aleksander",
             "Kasia", "Ala", "Zuzia", "Paulina", "Justyna", "Marta", "Kaja", "Karolina", "Ola"};
 
-    private String[] lastNames = new String[] {
-            "Nowak", "Leśniak", "Kozioł", "Minkiewicz", "Dubniewicz", "Iwańczyk", "Masiak", "Gajor",
-            "Miniak", "Tuleja", "Dworczyk", "Maślakiewicz", "Marnicz", "Tałataj", "Grubiak", "Dolczyk"};
+//    private String[] lastNames = new String[] {
+//            "Nowak", "Leśniak", "Kozioł", "Minkiewicz", "Dubniewicz", "Iwańczyk", "Masiak", "Gajor",
+//            "Miniak", "Tuleja", "Dworczyk", "Maślakiewicz", "Marnicz", "Tałataj", "Grubiak", "Dolczyk"};
 
     private Random random;
 
@@ -63,9 +63,14 @@ public class RandomDataGenerator {
     private List<Inhabitant> generateRandomInhabitants(int number) {
         List<Inhabitant> inhabitantList = new ArrayList<>();
         for (int i = 0; i < number; i++) {
+            char[] lastNameCharArr = new char[random.nextInt(10) + 5];
+            lastNameCharArr[0] = (char) (65 + random.nextInt(26));
+            for (int j = 1; j < lastNameCharArr.length; j++) {
+                lastNameCharArr[j] = (char) (97 + random.nextInt(26));
+            }
             Inhabitant inhabitant = new Inhabitant(
                     firstNames[random.nextInt(firstNames.length)],
-                    lastNames[random.nextInt(lastNames.length)]);
+                    new String(lastNameCharArr));
             inhabitantList.add(inhabitant);
         }
         return inhabitantList;

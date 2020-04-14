@@ -1,5 +1,6 @@
 package ztp.lista3.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Country {
@@ -8,6 +9,15 @@ public class Country {
 
     public Country(String name) {
         this.name = name;
+    }
+
+    public Country(Country country) {
+        this(country.name);
+        this.cities = new ArrayList<>();
+        for (City city : country.cities) {
+            City newCity = new City(city);
+            this.cities.add(newCity);
+        }
     }
 
     public void setCities(List<City> cities) {
