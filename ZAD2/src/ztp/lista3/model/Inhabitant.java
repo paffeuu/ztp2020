@@ -1,6 +1,8 @@
 package ztp.lista3.model;
 
-public class Inhabitant {
+import java.io.Serializable;
+
+public class Inhabitant implements Serializable {
     private String firstName;
     private String lastName;
 

@@ -1,9 +1,10 @@
 package ztp.lista3.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Country {
+public class Country implements Serializable {
     private String name;
     private List<City> cities;
 
@@ -42,7 +43,7 @@ public class Country {
 
     @Override
     public String toString() {
-        return "\nCountry{" +
+        return "Country{" +
                 "name='" + name + '\'' +
                 ", cities=" + cities +
                 '}';

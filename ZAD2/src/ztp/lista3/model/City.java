@@ -1,9 +1,10 @@
 package ztp.lista3.model;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class City {
+public class City implements Serializable {
     private String name;
     private Set<Inhabitant> inhabitants;
 
