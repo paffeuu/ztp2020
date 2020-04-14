@@ -7,6 +7,10 @@ public class Country {
     private String name;
     private List<City> cities;
 
+    public Country() {
+        this.cities = new ArrayList<>();
+    }
+
     public Country(String name) {
         this.name = name;
     }
@@ -18,6 +22,18 @@ public class Country {
             City newCity = new City(city);
             this.cities.add(newCity);
         }
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public List<City> getCities() {
+        return cities;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setCities(List<City> cities) {

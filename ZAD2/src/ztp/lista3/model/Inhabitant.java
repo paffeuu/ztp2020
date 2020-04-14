@@ -4,6 +4,8 @@ public class Inhabitant {
     private String firstName;
     private String lastName;
 
+    public Inhabitant() {}
+
     public Inhabitant(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -11,6 +13,22 @@ public class Inhabitant {
 
     public Inhabitant(Inhabitant inhabitant) {
         this(inhabitant.firstName, inhabitant.lastName);
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     @Override

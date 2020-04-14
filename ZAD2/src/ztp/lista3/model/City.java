@@ -7,6 +7,10 @@ public class City {
     private String name;
     private Set<Inhabitant> inhabitants;
 
+    public City() {
+        this.inhabitants = new HashSet<>();
+    }
+
     public City(String name) {
         this.name = name;
         this.inhabitants = new HashSet<>();
@@ -19,6 +23,18 @@ public class City {
             Inhabitant newInhabitant = new Inhabitant(inhabitant);
             this.inhabitants.add(newInhabitant);
         }
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Set<Inhabitant> getInhabitants() {
+        return inhabitants;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setInhabitants(Set<Inhabitant> inhabitants) {
