@@ -5,6 +5,7 @@ import ztp.lista3.deepcopy.CopyConstructorCopier;
 import ztp.lista3.deepcopy.CountryCopier;
 import ztp.lista3.deepcopy.SetterCopier;
 import ztp.lista3.model.Country;
+import ztp.lista3.utils.DeepCopyValidator;
 import ztp.lista3.utils.RandomDataGenerator;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         RandomDataGenerator randomDataGenerator = new RandomDataGenerator();
+        DeepCopyValidator validator = new DeepCopyValidator();
         List<Country>[] countriesArray = new List[5];
         CountryCopier countryCopier;
         List<Country> copiedCountries;
@@ -34,6 +36,11 @@ public class Main {
             copiedCountries = countryCopier.copyCountryList(countriesArray[i]);
             long firstEnd = System.currentTimeMillis();
             long firstTime = firstEnd - firstStart;
+            if (validator.validateDataSet(countriesArray[i], copiedCountries)) {
+                System.out.println("Validation passed.");
+            } else {
+                System.out.println("Validation failed!");
+            }
             System.out.println("This approach took " + firstTime + " miliseconds.\n");
 
             countryCopier = new SetterCopier();
@@ -42,6 +49,11 @@ public class Main {
             copiedCountries = countryCopier.copyCountryList(countriesArray[i]);
             long secondEnd = System.currentTimeMillis();
             long secondTime = secondEnd - secondStart;
+            if (validator.validateDataSet(countriesArray[i], copiedCountries)) {
+                System.out.println("Validation passed.");
+            } else {
+                System.out.println("Validation failed!");
+            }
             System.out.println("This approach took " + secondTime + " miliseconds.\n");
 
             countryCopier = new ApacheCommonsCopier();
@@ -50,6 +62,11 @@ public class Main {
             copiedCountries = countryCopier.copyCountryList(countriesArray[i]);
             long thirdEnd = System.currentTimeMillis();
             long thirdTime = thirdEnd - thirdStart;
+            if (validator.validateDataSet(countriesArray[i], copiedCountries)) {
+                System.out.println("Validation passed.");
+            } else {
+                System.out.println("Validation failed!");
+            }
             System.out.println("This approach took " + thirdTime + " miliseconds.\n");
         }
 
