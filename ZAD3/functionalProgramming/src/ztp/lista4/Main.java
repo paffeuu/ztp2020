@@ -27,13 +27,19 @@ public class Main {
         System.out.println(authorsOfBooksFromBookshelf);
         System.out.println();
 
-        int[] bookshelvesSize = new int[] {3, 7, 4, 2, 5, 10, 2, 3, 0, 5};
+        int[] bookshelvesSize = new int[] {3, 7, 4, 2, 5, 10, 2, 3, 1, 5};
         List<Room> roomsWithBookshelvesOfDifferentSize =
                 dataFiller.generateRandomRooms(bookshelvesSize);
         Room roomWithBiggestNumberOfBooks =
                 bookFinder.findRoomWithBiggestNumberOfBooks(roomsWithBookshelvesOfDifferentSize);
         System.out.println("Pokój z największą ilością książek:");
         System.out.println(roomWithBiggestNumberOfBooks);
+        System.out.println();
+
+        Room roomWithSmallestNumberOfBooks =
+                bookFinder.findRoomWithSmallestNumberOfBooks(roomsWithBookshelvesOfDifferentSize);
+        System.out.println("Pokój z najmniejszą ilością książek:");
+        System.out.println(roomWithSmallestNumberOfBooks);
         System.out.println();
 
         int booksWithSoftback = bookFinder.findNumberOfBooksWithSpecificBackType(rooms, Book.BackType.SOFTBACK);

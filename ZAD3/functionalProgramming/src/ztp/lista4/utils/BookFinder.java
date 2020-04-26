@@ -40,6 +40,13 @@ public class BookFinder {
                 .orElse(null);
     }
 
+    //min
+    public Room findRoomWithSmallestNumberOfBooks(List<Room> rooms) {
+        return rooms.stream()
+                .min(Comparator.comparingInt(this::getBooksNumberInRoom))
+                .orElse(null);
+    }
+
     //groupingBy
     public int findNumberOfBooksWithSpecificBackType(List<Room> rooms, Book.BackType backType) {
         Map<Book.BackType, List<Book>> bookByBackTypeMap =
