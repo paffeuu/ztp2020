@@ -47,12 +47,26 @@ public class DataFiller {
         return rooms;
     }
 
+    public List<Room> generateRandomRooms(int[] bookshelvesForRoom) {
+        List<Room> rooms = new ArrayList<>(bookshelvesForRoom.length);
+        for (int i = 0; i < bookshelvesForRoom.length; i++) {
+            Room room = generateRandomRoom(bookshelvesForRoom[i]);
+            rooms.add(room);
+        }
+        return rooms;
+    }
+
+    public Room generateRandomRoom(int bookshelvesForRoom) {
+        Room room = new Room(generateRoomName());
+        for (int i = 0; i < bookshelvesForRoom; i++) {
+            Bookshelf bookshelf = generateRandomBookshelf(room.getBookshelves().size(), RANDOM.nextInt(5));
+            room.addBookshelf(bookshelf);
+        }
+        return room;
+    }
 
     public Room generateRandomRoom(int bookshelvesForRoom, int booksForBookshelf) {
-        int roomTypeNr = RANDOM.nextInt(ROOM_TYPES.length);
-        int roomOwner = RANDOM.nextInt(ROOM_OWNERS.length);
-        String roomName = ROOM_TYPES[roomTypeNr] + " " + ROOM_OWNERS[roomOwner];
-        Room room = new Room(roomName);
+        Room room = new Room(generateRoomName());
         for (int i = 0; i < bookshelvesForRoom; i++) {
             Bookshelf bookshelf = generateRandomBookshelf(room.getBookshelves().size(), booksForBookshelf);
             room.addBookshelf(bookshelf);
@@ -74,6 +88,22 @@ public class DataFiller {
         int randomNumberOfPages = RANDOM.nextInt(1000);
         Book book = new Book(BOOKS[randomBookNr]);
         book.setNumberOfPages(randomNumberOfPages);
+        book.setBackType(randomBackType());
         return book;
+    }
+
+    private String generateRoomName() {
+        int roomTypeNr = RANDOM.nextInt(ROOM_TYPES.length);
+        int roomOwner = RANDOM.nextInt(ROOM_OWNERS.length);
+        return ROOM_TYPES[roomTypeNr] + " " + ROOM_OWNERS[roomOwner];
+    }
+
+    private Book.BackType randomBackType() {
+        int random = RANDOM.nextInt(2);
+        if (random == 0) {
+            return Book.BackType.HARDBACK;
+        } else {
+            return Book.BackType.SOFTBACK;
+        }
     }
 }

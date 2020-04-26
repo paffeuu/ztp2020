@@ -4,11 +4,13 @@ public class Book {
     private String author;
     private String title;
     private int numberOfPages;
+    private BackType backType;
 
-    public Book(String author, String title, int numberOfPages) {
+    public Book(String author, String title, int numberOfPages, BackType backType) {
         this.author = author;
         this.title = title;
         this.numberOfPages = numberOfPages;
+        this.backType = backType;
     }
 
     public Book(String author, String title) {
@@ -20,6 +22,7 @@ public class Book {
         this.author = book.author;
         this.title = book.title;
         this.numberOfPages = book.numberOfPages;
+        this.backType = book.backType;
     }
 
     public String getAuthor() {
@@ -46,6 +49,14 @@ public class Book {
         this.numberOfPages = numberOfPages;
     }
 
+    public BackType getBackType() {
+        return backType;
+    }
+
+    public void setBackType(BackType backType) {
+        this.backType = backType;
+    }
+
     @Override
     public String toString() {
         return "\t\t\t\tBook{" +
@@ -53,5 +64,9 @@ public class Book {
                 ", title='" + title + '\'' +
                 ", numberOfPages=" + numberOfPages +
                 "}\n";
+    }
+
+    public enum BackType {
+        HARDBACK, SOFTBACK
     }
 }
