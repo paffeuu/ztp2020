@@ -43,7 +43,7 @@ public class ClassSpecification {
         private List<Attribute> attributes;
         private boolean getters;
         private boolean setters;
-        private String designPattern;
+        private String designPattern = "no";
 
         public ClassSpecificationBuilder name(String name) {
             this.name = name;

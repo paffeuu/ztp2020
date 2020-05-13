@@ -9,7 +9,7 @@ import java.util.List;
 
 public class ClassDescriptionParser {
     private final String[] AVAILABLE_DESIGN_PATTERNS = new String[] {
-            "Singleton", "Builder"
+            "Singleton"/*, "Builder"*/
     };
 
     public ClassSpecification parse(String classDescription) throws ParserException {
@@ -55,7 +55,6 @@ public class ClassDescriptionParser {
         if (temp.length != 2 || temp[1].isEmpty() || temp[1].trim().isEmpty()) {
             throw new ParserException("Niepoprawna deklaracja nazwy klasy.");
         }
-        String className = temp[1].trim();
         return temp[1].trim();
     }
 
@@ -77,8 +76,10 @@ public class ClassDescriptionParser {
                 temp = temp[1].trim().split("=");
                 attributeType = temp[0].trim();
                 attributeDefaultValue = temp[1].trim();
-                if (!attributeType.equals("String")) {
-                    attributeType = attributeType.replaceAll("'", "");
+                if (attributeType.equals("String")) {
+                    attributeDefaultValue = attributeDefaultValue.replaceAll("'", "\"");
+                } else {
+                    attributeDefaultValue = attributeDefaultValue.replaceAll("'", "");
                 }
             } else {
                 attributeType = temp[1].trim();
