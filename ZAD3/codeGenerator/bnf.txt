@@ -1,0 +1,6 @@
+<expression> ::= <class declaration> <attributes> [<getter setter>] [<design pattern>]
+<class declaration> ::= "create " <class name> ";"
+<attributes> ::= <attribute> {", " <attribute>} "; "
+<attribute> ::= (<attribute name>:<attribute type>[="<default attribute value"])
+<getter setter> ::= ("getters" | "setters"); "
+<design pattern> ::= "Singleton;"
